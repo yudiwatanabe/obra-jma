@@ -5,17 +5,19 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import * as XLSX from "xlsx";
 import { fetchCategories, fetchOrcamento, fetchFaturas, fetchProvisoes, upsertCategory, deleteCategory as dbDeleteCategory, saveFatura as dbSaveFatura, deleteFatura as dbDeleteFatura, saveProvisao as dbSaveProvisao, deleteProvisao as dbDeleteProvisao, fetchAllProfiles, approveUser, revokeUser, toggleAdmin } from "../lib/data";
 
+const mkCM=(cats)=>Object.fromEntries(cats.map(c=>[c.id,c]));
+const fcv=(f,cid)=>(f.aloc||[]).filter(a=>a.cat===cid).reduce((s,a)=>s+a.valor,0);
+const genYMs=(a,b)=>{if(!a||!b)return[];const r=[];let[y,m]=a.split("-").map(Number);const[ey,em]=b.split("-").map(Number);while(y<ey||(y===ey&&m<=em)){r.push(`${y}-${String(m).padStart(2,"0")}`);m++;if(m>12){m=1;y++;}}return r;};
+const toYM=(d)=>{if(!d)return null;const t=new Date(d+"T12:00:00");return`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}`;};
+const ymL=(k)=>{if(!k)return"";const[y,m]=k.split("-");return["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][+m-1]+"/"+y.slice(2);};
+const uid=()=>"id_"+Math.random().toString(36).slice(2,10);
+const TODAY=new Date().toISOString().slice(0,10);
+
 const fmt=(v)=>v!=null?v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}):"—";
 const R$=(v)=>v!=null?"R$ "+fmt(v):"—";
 const R$k=(v)=>{if(v==null)return"—";const a=Math.abs(v);const s=v<0?"-":"";if(a>=1e6)return s+"R$ "+fmt(a/1e6).replace(/,00$/,"")+"M";if(a>=1e3)return s+"R$ "+Math.round(a/1e3)+"k";return R$(v);};
 const pc=(v)=>v!=null?`${(v*100).toFixed(1)}%`:"—";
 const fd=(d)=>d?new Date(d+"T12:00:00").toLocaleDateString("pt-BR"):"—";
-const TODAY="2026-02-20";
-const uid=()=>"id_"+Math.random().toString(36).slice(2,10);
-const toYM=(d)=>{if(!d)return null;const t=new Date(d+"T12:00:00");return`${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}`;};
-const ymL=(k)=>{if(!k)return"";const[y,m]=k.split("-");return["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"][+m-1]+"/"+y.slice(2);};
-const fcv=(f,cid)=>(f.aloc||[]).filter(a=>a.cat===cid).reduce((s,a)=>s+a.valor,0);
-const genYMs=(a,b)=>{if(!a||!b)return[];const r=[];let[y,m]=a.split("-").map(Number);const[ey,em]=b.split("-").map(Number);while(y<ey||(y===ey&&m<=em)){r.push(`${y}-${String(m).padStart(2,"0")}`);m++;if(m>12){m=1;y++;}}return r;};
 
 /* ═══ MONEY INPUT — formats with . thousands and , decimals ═══ */
 function MoneyInput({ value, onChange, placeholder, style, ...rest }) {
