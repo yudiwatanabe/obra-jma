@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/db';
 import { fetchProfile } from '../lib/data';
 import AuthPage from '../components/AuthPage';
 import PendingApproval from '../components/PendingApproval';
