@@ -4,7 +4,7 @@ export default function PendingApproval({ email, onSignOut }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f7fafc', padding: 20 }}>
       <div style={{ background: '#fff', borderRadius: 16, padding: 36, maxWidth: 420, textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,.08)' }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>⌛</div>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
         <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1a365d', marginBottom: 8 }}>Aguardando Aprovação</h2>
         <p style={{ fontSize: 14, color: '#718096', marginBottom: 20, lineHeight: 1.6 }}>
           Seu cadastro com <strong>{email}</strong> foi recebido. O administrador precisa aprovar seu acesso para que você possa utilizar o sistema.
