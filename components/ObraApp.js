@@ -884,6 +884,13 @@ function CfgPage({ cats, setCats, CM, orc, setOrc, fat, prov, provData, res, pro
   const handleToggleAdmin = async (uid, current) => {
     try { await toggleAdmin(uid, !current); setUsers(p => p.map(u => u.id === uid ? { ...u, is_admin: !current } : u)); } catch (e) { alert("Erro: " + e.message); }
   };
+  const handleResetPassword = async (email) => {
+    try {
+      const { error } = await (await import('../lib/db')).supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/reset' });
+      if (error) throw error;
+      alert("E-mail de recuperação enviado para " + email);
+    } catch (e) { alert("Erro: " + e.message); }
+  };
 
   return (<div>
     <div style={{ background: "white", borderRadius: 11, padding: 18, border: "1px solid #e2e8f0", marginBottom: 20 }}>
@@ -927,6 +934,7 @@ function CfgPage({ cats, setCats, CM, orc, setOrc, fat, prov, provData, res, pro
                 {!u.approved ? <button className="bp" style={{ padding: "3px 10px", fontSize: 10 }} onClick={() => handleApprove(u.id)}>Aprovar</button>
                   : <button className="bs" style={{ padding: "3px 10px", fontSize: 10, color: "#e53e3e", borderColor: "#fed7d7" }} onClick={() => handleRevoke(u.id)}>Revogar</button>}
                 <button className="bs" style={{ padding: "3px 10px", fontSize: 10 }} onClick={() => handleToggleAdmin(u.id, u.is_admin)}>{u.is_admin ? "Remover Admin" : "Tornar Admin"}</button>
+                <button className="bs" style={{ padding: "3px 10px", fontSize: 10, color: "#3182ce", borderColor: "#bee3f8" }} onClick={() => handleResetPassword(u.email)} title="Enviar e-mail de reset">🔑 Reset</button>
               </td>
             </tr>)}</tbody>
           </table>
