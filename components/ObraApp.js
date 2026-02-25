@@ -460,7 +460,7 @@ function FForm({ cats, CM, item, prov, provData, onSave, onClose }) {
   const activeProv = prov.filter(p => p.st === "Ativo");
   const toggleProv = (pid) => sF(p => { const ids = [...(p.prov_ids || [])]; const idx = ids.indexOf(pid); if (idx >= 0) ids.splice(idx, 1); else ids.push(pid); return { ...p, prov_ids: ids }; });
   const validate = () => { const e = {}; if (!f.forn) e.forn = "!"; if (!f.vf || vf <= 0) e.vf = "!"; if (f.st === "Pago" && !f.de) e.de = "!"; if (Math.abs(diff) > 0.01 && vf > 0) e.aloc = "Soma ≠ valor"; sE(e); return !Object.keys(e).length; };
-  const fns = [...new Set(F0.map(f => f.forn))].sort();
+  const fns = [...new Set(fat.map(f => f.forn))].sort();
   return (<div>
     <div style={{ padding: "14px 20px", borderBottom: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "space-between" }}><h2 style={{ fontSize: 15, fontWeight: 600 }}>{item?.id ? "Editar" : "Nova"} Fatura</h2><button className="bi" onClick={onClose}><I n="x" s={19} /></button></div>
     <div style={{ padding: "14px 20px", display: "flex", flexDirection: "column", gap: 12, maxHeight: "70vh", overflowY: "auto" }}>
