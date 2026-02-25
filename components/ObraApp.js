@@ -303,7 +303,7 @@ export default function ObraApp({ session, profile, onSignOut }) {
         {pg === "cfg" && <CfgPage cats={cats} setCats={setCats} CM={CM} orc={orc} setOrc={setOrc} fat={fat} prov={prov} provData={provData} res={res} profile={profile} />}
       </div>
     </main>
-    {mod === "ff" && <div className="mo" onClick={() => { setMod(null); setEi(null); }}><div className="mc" onClick={e => e.stopPropagation()}><FForm cats={cats} CM={CM} item={ei} prov={prov} provData={provData} onSave={saveFat} onClose={() => { setMod(null); setEi(null); }} /></div></div>}
+    {mod === "ff" && <div className="mo" onClick={() => { setMod(null); setEi(null); }}><div className="mc" onClick={e => e.stopPropagation()}><FForm cats={cats} CM={CM} item={ei} prov={prov} provData={provData} fat={fat} onSave={saveFat} onClose={() => { setMod(null); setEi(null); }} /></div></div>}
     {mod === "pf" && <div className="mo" onClick={() => { setMod(null); setEi(null); }}><div className="mc" onClick={e => e.stopPropagation()}><PForm cats={cats} CM={CM} item={ei} onSave={saveProv} onClose={() => { setMod(null); setEi(null); }} /></div></div>}
   </div>);
 }
@@ -446,7 +446,7 @@ function Fats({ cats, CM, fat, prov, provData, onSave, onDel, onToggleRev, setMo
 /* ═══ FATURA FORM ═══ */
 const Lb = ({ l, ch }) => <div><label style={{ fontSize: 11, fontWeight: 500, color: "#4a5568", marginBottom: 2, display: "block" }}>{l}</label>{ch}</div>;
 
-function FForm({ cats, CM, item, prov, provData, onSave, onClose }) {
+function FForm({ cats, CM, item, prov, provData, fat, onSave, onClose }) {
   const blank = { forn: "", desc: "", ndoc: "", vc: "", vf: "", st: "Programado", dp: "", de: "", aloc: [{ cat: "c01", valor: "" }], obs: "", link_nf: "", link_comp: "", link_contrato: "", prov_ids: [] };
   const [f, sF] = useState(item || blank);
   const [er, sE] = useState({});
